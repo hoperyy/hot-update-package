@@ -1,0 +1,8 @@
+.git/
+.idea/
+node_modules/*
+.DS_Store
+
+# eslint result
+lint-result
+coverage/**
