@@ -214,7 +214,7 @@ const patchPackage = ({ packageName, cacheFolder, targetFolder, registry }) => {
     } else {
         const spinner = ora(`updating ${packageName}...`).start();
         if (diffResult.added.length) {
-            require('child_process').execSync(`cd ${targetPackageFolder} && npm i ${diffResult.added.join(' ')} --registry ${registry} --save`);
+            require('child_process').execSync(`cd ${targetPackageFolder} && npm i ${diffResult.added.join(' ')} --registry ${registry} --save --silent`);
         }
         if (diffResult.removed.length) {
             require('child_process').execSync(`cd ${targetPackageFolder} && npm uninstall ${diffResult.removed.join(' ')} --save`);
