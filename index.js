@@ -223,7 +223,7 @@ const patchPackage = ({ packageName, cacheFolder, targetFolder, registry }) => {
     }
 };
 
-const installPackageWithoutOptional = ({ packageName, cacheFolder, targetFolder, registry, callback }) => {
+const installPackageWithoutOptional = ({ packageName, cacheFolder, targetFolder, registry = require('registry-url')(), callback }) => {
     const child = require('child_process');
 
     ensurePackageJson(path.join(targetFolder, 'package.json'), {
