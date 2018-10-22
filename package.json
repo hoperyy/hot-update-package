@@ -1,6 +1,6 @@
 {
   "name": "hot-update-package",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "hot-update-package",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,7 @@
     "get-npm-package-version": "^1.0.6",
     "ora": "^3.0.0",
     "recursive-readdir-sync": "^1.0.6",
+    "registry-url": "^4.0.0",
     "simple-array-diff": "^1.1.0"
   }
 }
