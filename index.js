@@ -208,18 +208,14 @@ const patchPackage = ({ packageName, cacheFolder, targetFolder, registry }) => {
     replacePackageFiles(srcPackageFolder, targetPackageFolder);
 
     if (diffResult.type === 'package-file-not-exists') {
-        const spinner = ora(`installing ${packageName}...`).start();
         require('child_process').execSync(`cd ${targetPackageFolder} && npm i --registry ${registry} --silent`);
-        spinner.succeed(`${packageName} installed!`).stop();
     } else {
-        const spinner = ora(`updating ${packageName}...`).start();
         if (diffResult.added.length) {
             require('child_process').execSync(`cd ${targetPackageFolder} && npm i ${diffResult.added.join(' ')} --registry ${registry} --save --silent`);
         }
         if (diffResult.removed.length) {
             require('child_process').execSync(`cd ${targetPackageFolder} && npm uninstall ${diffResult.removed.join(' ')} --save`);
         }
-        spinner.succeed(`${packageName} updated!`).stop();
     }
 };
 
@@ -236,9 +232,11 @@ const installPackageWithoutOptional = ({ packageName, cacheFolder, targetFolder,
             "name": "hot-update-package-cache",
             "version": "1.0.0"
         });
+        const spinner = ora(`updating ${packageName}...`).start();
         child.execSync(`cd ${cacheFolder} && npm --registry ${registry} install ${packageName}@latest --no-optional --silent`);
 
         patchPackage({ packageName, cacheFolder, targetFolder, registry });
+        spinner.succeed(`${packageName} updated!`).stop();
         callback();
     } catch (err) {
         console.log(err.stack);
