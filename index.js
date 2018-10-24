@@ -26,10 +26,6 @@ const isPackageOutdate = ({ packageName, targetFolder, registry }) => {
 
     if (latestVersion) {
         if (currentVersion !== latestVersion) {
-            // console.log(`\npackage ${packageName} is outdated, details as below:\n`);
-            // console.log('  - packageName: ', packageName);
-            // console.log('  - currentVersion: ', currentVersion);
-            // console.log('  - hopedVersion: ', latestVersion, '\n');
             return true;
         }
         return false;
