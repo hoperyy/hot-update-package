@@ -162,7 +162,7 @@ const replacePackageFiles = (srcPackageFolder, targetPackageFolder) => {
                         }
 
                         fse.ensureFileSync(targetFile);
-                        fse.copyFileSync(srcFile, targetFile);
+                        fse.copySync(srcFile, targetFile);
                     }
                 });
                 break;
