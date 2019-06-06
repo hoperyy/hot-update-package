@@ -1,6 +1,6 @@
 {
   "name": "hot-update-package",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "hot-update-package",
   "main": "index.js",
   "scripts": {
