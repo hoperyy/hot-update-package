@@ -204,10 +204,10 @@ const patchPackage = ({ packageName, cacheFolder, targetFolder, registry }) => {
     replacePackageFiles(srcPackageFolder, targetPackageFolder);
 
     if (diffResult.type === 'package-file-not-exists') {
-        require('child_process').execSync(`cd ${targetPackageFolder} && npm i --registry ${registry} --silent`);
+        require('child_process').execSync(`cd ${targetPackageFolder} && npm i --registry ${registry}${silent ? ' --silent' : ''}`);
     } else {
         if (diffResult.added.length) {
-            require('child_process').execSync(`cd ${targetPackageFolder} && npm i ${diffResult.added.join(' ')} --registry ${registry} --save --silent`);
+            require('child_process').execSync(`cd ${targetPackageFolder} && npm i ${diffResult.added.join(' ')} --registry ${registry} --save${silent ? ' --silent' : ''}`);
         }
         if (diffResult.removed.length) {
             require('child_process').execSync(`cd ${targetPackageFolder} && npm uninstall ${diffResult.removed.join(' ')} --save`);
@@ -215,7 +215,7 @@ const patchPackage = ({ packageName, cacheFolder, targetFolder, registry }) => {
     }
 };
 
-const installPackageWithoutOptional = ({ packageName, cacheFolder, targetFolder, registry = require('registry-url')(), callback }) => {
+const installPackageWithoutOptional = ({ packageName, cacheFolder, targetFolder, registry = require('registry-url')(), callback, silent }) => {
     const child = require('child_process');
 
     ensurePackageJson(path.join(targetFolder, 'package.json'), {
@@ -229,7 +229,7 @@ const installPackageWithoutOptional = ({ packageName, cacheFolder, targetFolder,
             "version": "1.0.0"
         });
         const spinner = ora(`updating ${packageName}...`).start();
-        child.execSync(`cd ${cacheFolder} && npm --registry ${registry} install ${packageName}@latest --no-optional --silent`);
+        child.execSync(`cd ${cacheFolder} && npm --registry ${registry} install ${packageName}@latest --no-optional${silent ? ' --silent' : ''}`);
 
         patchPackage({ packageName, cacheFolder, targetFolder, registry });
         spinner.succeed(`${packageName} updated!`).stop();
@@ -241,7 +241,7 @@ const installPackageWithoutOptional = ({ packageName, cacheFolder, targetFolder,
     }
 };
 
-module.exports = ({ packageName, cacheFolder, targetFolder, callback = () => {}, registry }) => {
+module.exports = ({ packageName, cacheFolder, targetFolder, callback = () => {}, registry, silent = true }) => {
     // install package with only optionalDependencies
     const spinner = ora('Checking update...').start();
     const outdated = isPackageOutdate({ packageName, targetFolder, registry });
@@ -251,7 +251,7 @@ module.exports = ({ packageName, cacheFolder, targetFolder, callback = () => {},
         spinner.succeed(`Checking update done!`).stop();
     }
     if (outdated) {
-        installPackageWithoutOptional({ packageName, cacheFolder, targetFolder, registry, callback });
+        installPackageWithoutOptional({ packageName, cacheFolder, targetFolder, registry, callback, silent });
     } else {
         callback();
     }

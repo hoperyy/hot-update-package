@@ -4,6 +4,7 @@ require('hot-update-package')({
     cacheFolder: 'xxx/yyy',
     targetFolder: 'aaa/bbb',
     registry: 'xxx',
+    silent: true,
     callback() {
         // hook after installed/updated
     }
