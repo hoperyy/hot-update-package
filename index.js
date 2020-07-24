@@ -186,7 +186,7 @@ const replacePackageFiles = (srcPackageFolder, targetPackageFolder) => {
     }
 };
 
-const patchPackage = ({ packageName, cacheFolder, targetFolder, registry }) => {
+const patchPackage = ({ packageName, cacheFolder, targetFolder, registry, silent }) => {
     const srcPackageFolder = path.join(cacheFolder, 'node_modules', packageName);
     const srcPackageDep = path.join(cacheFolder, 'node_modules');
     const targetPackageFolder = path.join(targetFolder, 'node_modules', packageName);
@@ -231,7 +231,7 @@ const installPackageWithoutOptional = ({ packageName, cacheFolder, targetFolder,
         const spinner = ora(`updating ${packageName}...`).start();
         child.execSync(`cd ${cacheFolder} && npm --registry ${registry} install ${packageName}@latest --no-optional${silent ? ' --silent' : ''}`);
 
-        patchPackage({ packageName, cacheFolder, targetFolder, registry });
+        patchPackage({ packageName, cacheFolder, targetFolder, registry, silent });
         spinner.succeed(`${packageName} updated!`).stop();
         callback();
     } catch (err) {
